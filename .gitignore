@@ -1,0 +1,15 @@
+# System
+.DS_Store
+
+# Development & Scripts
+*.py
+_legacy/
+docs/
+.gemini/
+.agent/
+temp_playback.html
+preview.html
+index_no_dwell.html
+
+# Unused Assets
+style.css

@@ -2,14 +2,29 @@
 <html lang="ja">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0Z6EQW6TS"></script>
+    <!-- Google tag (gtag.js) - Conditional Load -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+        // 1. Opt-out Trigger: Check URL for ?optout=true
+        if (window.location.search.includes('optout=true')) {
+            localStorage.setItem('analytics_optout', 'true');
+            alert('【管理者設定】オプトアウト完了しました。\nこのブラウザからのアクセスは今後計測されません。');
+        }
 
-        gtag('config', 'G-W0Z6EQW6TS');
+        // 2. Load GA4 only if (NOT opted out) AND (NOT localhost)
+        if (!localStorage.getItem('analytics_optout') &&
+            location.hostname !== 'localhost' &&
+            location.hostname !== '127.0.0.1') {
+
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = "https://www.googletagmanager.com/gtag/js?id=G-W0Z6EQW6TS";
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-W0Z6EQW6TS');
+        }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -110,6 +110,13 @@
             background: #94a3b8;
         }
 
+        /* Hide Unicorn Studio Badge */
+        a[href*="unicorn.studio"] {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
         body {
             background-color: #ffffff;
             color: #1e293b;
@@ -791,6 +798,20 @@
 
 
 
+        // --- Helper Component ---
+        function ScriptLoader({ src, onLoad }) {
+            React.useEffect(() => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = onLoad;
+                document.body.appendChild(script);
+                return () => {
+                    document.body.removeChild(script);
+                }
+            }, [src, onLoad]);
+            return null;
+        }
+
         // --- Main App ---
         function App() {
             const [data, setData] = React.useState(null);
@@ -806,12 +827,27 @@
 
             return (
                 <div className="antialiased selection:bg-cyan-100 selection:text-cyan-900 relative">
-                    {/* GLOBAL BACKGROUND (Soft Linear Aurora) */}
-                    <div className="aurora-linear-bg">
-                        <div className="aurora-beam beam-1"></div>
-                        <div className="aurora-beam beam-2"></div>
-                        <div className="aurora-beam beam-3"></div>
-                    </div>
+                    {/* GLOBAL BACKGROUND (Unicorn Studio WebGL) */}
+                    <div
+                        data-us-project="W9MiWJn36eBpTaBlwJTQ"
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100vw',
+                            height: '100vh',
+                            zIndex: -1,
+                        }}
+                    ></div>
+                    {/* Old Aurora BG removed */}
+
+                    <React.Fragment>
+                        <ScriptLoader src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.5/dist/unicornStudio.umd.js" onLoad={() => {
+                            if (window.UnicornStudio) {
+                                window.UnicornStudio.init();
+                            }
+                        }} />
+                    </React.Fragment>
 
 
                     <Navigation />
